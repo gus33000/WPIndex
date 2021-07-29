@@ -25,221 +25,232 @@ namespace WPIndex
 {
     public static class XmlDsmDiff
     {
-		[XmlRoot(ElementName = "SourceVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-		public class SourceVersion
-		{
-			[XmlAttribute(AttributeName = "Major")]
-			public string Major { get; set; }
-			[XmlAttribute(AttributeName = "Minor")]
-			public string Minor { get; set; }
-			[XmlAttribute(AttributeName = "QFE")]
-			public string QFE { get; set; }
-			[XmlAttribute(AttributeName = "Build")]
-			public string Build { get; set; }
-		}
+        [XmlRoot(ElementName = "SourceVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class SourceVersion
+        {
+            [XmlAttribute(AttributeName = "Major")]
+            public string Major { get; set; }
+            [XmlAttribute(AttributeName = "Minor")]
+            public string Minor { get; set; }
+            [XmlAttribute(AttributeName = "QFE")]
+            public string QFE { get; set; }
+            [XmlAttribute(AttributeName = "Build")]
+            public string Build { get; set; }
+        }
 
-		[XmlRoot(ElementName = "TargetVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-		public class TargetVersion
-		{
-			[XmlAttribute(AttributeName = "Major")]
-			public string Major { get; set; }
-			[XmlAttribute(AttributeName = "Minor")]
-			public string Minor { get; set; }
-			[XmlAttribute(AttributeName = "QFE")]
-			public string QFE { get; set; }
-			[XmlAttribute(AttributeName = "Build")]
-			public string Build { get; set; }
-		}
+        [XmlRoot(ElementName = "TargetVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class TargetVersion
+        {
+            [XmlAttribute(AttributeName = "Major")]
+            public string Major { get; set; }
+            [XmlAttribute(AttributeName = "Minor")]
+            public string Minor { get; set; }
+            [XmlAttribute(AttributeName = "QFE")]
+            public string QFE { get; set; }
+            [XmlAttribute(AttributeName = "Build")]
+            public string Build { get; set; }
+        }
 
-		[XmlRoot(ElementName = "DiffFileEntry", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-		public class DiffFileEntry
-		{
-			[XmlElement(ElementName = "FileType", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public string FileType { get; set; }
-			[XmlElement(ElementName = "DevicePath", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public string DevicePath { get; set; }
-			[XmlElement(ElementName = "CabPath", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public string CabPath { get; set; }
-			[XmlElement(ElementName = "DiffType", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public string DiffType { get; set; }
-		}
+        [XmlRoot(ElementName = "DiffFileEntry", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class DiffFileEntry
+        {
+            [XmlElement(ElementName = "FileType", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string FileType { get; set; }
+            [XmlElement(ElementName = "DevicePath", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string DevicePath { get; set; }
+            [XmlElement(ElementName = "CabPath", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string CabPath { get; set; }
+            [XmlElement(ElementName = "DiffType", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string DiffType { get; set; }
+        }
 
-		[XmlRoot(ElementName = "Files", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-		public class Files
-		{
-			[XmlElement(ElementName = "DiffFileEntry", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public List<DiffFileEntry> DiffFileEntry { get; set; }
-		}
+        [XmlRoot(ElementName = "Files", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class Files
+        {
+            [XmlElement(ElementName = "DiffFileEntry", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<DiffFileEntry> DiffFileEntry { get; set; }
+        }
 
-		[XmlRoot(ElementName = "DiffPackage", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-		public class DiffPackage
-		{
-			[XmlElement(ElementName = "SourceVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public SourceVersion SourceVersion { get; set; }
-			[XmlElement(ElementName = "TargetVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public TargetVersion TargetVersion { get; set; }
-			[XmlElement(ElementName = "SourceHash", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public string SourceHash { get; set; }
-			[XmlElement(ElementName = "Name", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public string Name { get; set; }
-			[XmlElement(ElementName = "Files", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
-			public Files Files { get; set; }
-			[XmlAttribute(AttributeName = "xmlns")]
-			public string Xmlns { get; set; }
-		}
-	}
+        [XmlRoot(ElementName = "DiffPackage", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class DiffPackage
+        {
+            [XmlElement(ElementName = "SourceVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public SourceVersion SourceVersion { get; set; }
+            [XmlElement(ElementName = "TargetVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public TargetVersion TargetVersion { get; set; }
+            [XmlElement(ElementName = "SourceHash", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string SourceHash { get; set; }
+            [XmlElement(ElementName = "Name", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string Name { get; set; }
+            [XmlElement(ElementName = "Files", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public Files Files { get; set; }
+            [XmlAttribute(AttributeName = "xmlns")]
+            public string Xmlns { get; set; }
+        }
+    }
 
     public static class XmlMum
-	{
-		[XmlRoot(ElementName="assemblyIdentity", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class AssemblyIdentity {
-			[XmlAttribute(AttributeName="name")]
-			public string Name { get; set; }
-			[XmlAttribute(AttributeName="version")]
-			public string Version { get; set; }
-			[XmlAttribute(AttributeName="language")]
-			public string Language { get; set; }
-			[XmlAttribute(AttributeName="processorArchitecture")]
-			public string ProcessorArchitecture { get; set; }
-			[XmlAttribute(AttributeName="publicKeyToken")]
-			public string PublicKeyToken { get; set; }
-			[XmlAttribute(AttributeName="buildType")]
-			public string BuildType { get; set; }
-			[XmlAttribute(AttributeName="versionScope")]
-			public string VersionScope { get; set; }
-		}
+    {
+        [XmlRoot(ElementName = "assemblyIdentity")]
+        public class AssemblyIdentity
+        {
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "version")]
+            public string Version { get; set; }
+            [XmlAttribute(AttributeName = "language")]
+            public string Language { get; set; }
+            [XmlAttribute(AttributeName = "processorArchitecture")]
+            public string ProcessorArchitecture { get; set; }
+            [XmlAttribute(AttributeName = "publicKeyToken")]
+            public string PublicKeyToken { get; set; }
+            [XmlAttribute(AttributeName = "buildType")]
+            public string BuildType { get; set; }
+            [XmlAttribute(AttributeName = "versionScope")]
+            public string VersionScope { get; set; }
+        }
 
-		[XmlRoot(ElementName="phoneInformation", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class PhoneInformation {
-			[XmlAttribute(AttributeName="phoneRelease")]
-			public string PhoneRelease { get; set; }
-			[XmlAttribute(AttributeName="phoneOwnerType")]
-			public string PhoneOwnerType { get; set; }
-			[XmlAttribute(AttributeName="phoneOwner")]
-			public string PhoneOwner { get; set; }
-			[XmlAttribute(AttributeName="phoneComponent")]
-			public string PhoneComponent { get; set; }
-			[XmlAttribute(AttributeName="phoneSubComponent")]
-			public string PhoneSubComponent { get; set; }
-			[XmlAttribute(AttributeName="phoneGroupingKey")]
-			public string PhoneGroupingKey { get; set; }
-		}
+        [XmlRoot(ElementName = "phoneInformation")]
+        public class PhoneInformation
+        {
+            [XmlAttribute(AttributeName = "phoneRelease")]
+            public string PhoneRelease { get; set; }
+            [XmlAttribute(AttributeName = "phoneOwnerType")]
+            public string PhoneOwnerType { get; set; }
+            [XmlAttribute(AttributeName = "phoneOwner")]
+            public string PhoneOwner { get; set; }
+            [XmlAttribute(AttributeName = "phoneComponent")]
+            public string PhoneComponent { get; set; }
+            [XmlAttribute(AttributeName = "phoneSubComponent")]
+            public string PhoneSubComponent { get; set; }
+            [XmlAttribute(AttributeName = "phoneGroupingKey")]
+            public string PhoneGroupingKey { get; set; }
+        }
 
-		[XmlRoot(ElementName="file", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class File {
-			[XmlAttribute(AttributeName="name")]
-			public string Name { get; set; }
-			[XmlAttribute(AttributeName="size")]
-			public string Size { get; set; }
-			[XmlAttribute(AttributeName="staged")]
-			public string Staged { get; set; }
-			[XmlAttribute(AttributeName="compressed")]
-			public string Compressed { get; set; }
-			[XmlAttribute(AttributeName="sourcePackage")]
-			public string SourcePackage { get; set; }
-			[XmlAttribute(AttributeName="embeddedSign")]
-			public string EmbeddedSign { get; set; }
-			[XmlAttribute(AttributeName="cabpath")]
-			public string Cabpath { get; set; }
-		}
+        [XmlRoot(ElementName = "file")]
+        public class File
+        {
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "size")]
+            public string Size { get; set; }
+            [XmlAttribute(AttributeName = "staged")]
+            public string Staged { get; set; }
+            [XmlAttribute(AttributeName = "compressed")]
+            public string Compressed { get; set; }
+            [XmlAttribute(AttributeName = "sourcePackage")]
+            public string SourcePackage { get; set; }
+            [XmlAttribute(AttributeName = "embeddedSign")]
+            public string EmbeddedSign { get; set; }
+            [XmlAttribute(AttributeName = "cabpath")]
+            public string Cabpath { get; set; }
+        }
 
-		[XmlRoot(ElementName="customInformation", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class CustomInformation {
-			[XmlElement(ElementName="phoneInformation", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public PhoneInformation PhoneInformation { get; set; }
-			[XmlElement(ElementName="file", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public List<File> File { get; set; }
-		}
+        [XmlRoot(ElementName = "customInformation")]
+        public class CustomInformation
+        {
+            [XmlElement(ElementName = "phoneInformation")]
+            public PhoneInformation PhoneInformation { get; set; }
+            [XmlElement(ElementName = "file")]
+            public List<File> File { get; set; }
+        }
 
-		[XmlRoot(ElementName="component", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class Component {
-			[XmlElement(ElementName="assemblyIdentity", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public AssemblyIdentity AssemblyIdentity { get; set; }
-		}
+        [XmlRoot(ElementName = "component")]
+        public class Component
+        {
+            [XmlElement(ElementName = "assemblyIdentity")]
+            public AssemblyIdentity AssemblyIdentity { get; set; }
+        }
 
-		[XmlRoot(ElementName="update", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class Update {
-			[XmlElement(ElementName="component", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public Component Component { get; set; }
-			[XmlAttribute(AttributeName="name")]
-			public string Name { get; set; }
-		}
+        [XmlRoot(ElementName = "update")]
+        public class Update
+        {
+            [XmlElement(ElementName = "component")]
+            public Component Component { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+        }
 
-		[XmlRoot(ElementName="package", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class Package {
-			[XmlElement(ElementName="customInformation", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public CustomInformation CustomInformation { get; set; }
-			[XmlElement(ElementName="update", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public Update Update { get; set; }
-			[XmlAttribute(AttributeName="identifier")]
-			public string Identifier { get; set; }
-			[XmlAttribute(AttributeName="releaseType")]
-			public string ReleaseType { get; set; }
-			[XmlAttribute(AttributeName="restart")]
-			public string Restart { get; set; }
-			[XmlAttribute(AttributeName="targetPartition")]
-			public string TargetPartition { get; set; }
-			[XmlAttribute(AttributeName="binaryPartition")]
-			public string BinaryPartition { get; set; }
-		}
+        [XmlRoot(ElementName = "package")]
+        public class Package
+        {
+            [XmlElement(ElementName = "customInformation")]
+            public CustomInformation CustomInformation { get; set; }
+            [XmlElement(ElementName = "update")]
+            public Update Update { get; set; }
+            [XmlAttribute(AttributeName = "identifier")]
+            public string Identifier { get; set; }
+            [XmlAttribute(AttributeName = "releaseType")]
+            public string ReleaseType { get; set; }
+            [XmlAttribute(AttributeName = "restart")]
+            public string Restart { get; set; }
+            [XmlAttribute(AttributeName = "targetPartition")]
+            public string TargetPartition { get; set; }
+            [XmlAttribute(AttributeName = "binaryPartition")]
+            public string BinaryPartition { get; set; }
+        }
 
-		[XmlRoot(ElementName="assembly", Namespace="urn:schemas-microsoft-com:asm.v3")]
-		public class Assembly {
-			[XmlElement(ElementName="assemblyIdentity", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public AssemblyIdentity AssemblyIdentity { get; set; }
+        [XmlRoot(ElementName = "assembly")]
+        public class Assembly
+        {
+            [XmlElement(ElementName = "assemblyIdentity")]
+            public AssemblyIdentity AssemblyIdentity { get; set; }
 
-            [XmlArray(ElementName="registryKeys", Namespace = "urn:schemas-microsoft-com:asm.v3")]
+            [XmlArray(ElementName = "registryKeys")]
             [XmlArrayItem(ElementName = "registryKey")]
             public List<RegistryKey> RegistryKeys { get; set; }
 
-            [XmlElement(ElementName="package", Namespace="urn:schemas-microsoft-com:asm.v3")]
-			public Package Package { get; set; }
-			[XmlAttribute(AttributeName="xmlns")]
-			public string Xmlns { get; set; }
-			[XmlAttribute(AttributeName="manifestVersion")]
-			public string ManifestVersion { get; set; }
-			[XmlAttribute(AttributeName="displayName")]
-			public string DisplayName { get; set; }
-			[XmlAttribute(AttributeName="company")]
-			public string Company { get; set; }
-			[XmlAttribute(AttributeName="copyright")]
-			public string Copyright { get; set; }
+            [XmlElement(ElementName = "package")]
+            public Package Package { get; set; }
+            [XmlAttribute(AttributeName = "xmlns")]
+            public string Xmlns { get; set; }
+            [XmlAttribute(AttributeName = "manifestVersion")]
+            public string ManifestVersion { get; set; }
+            [XmlAttribute(AttributeName = "displayName")]
+            public string DisplayName { get; set; }
+            [XmlAttribute(AttributeName = "company")]
+            public string Company { get; set; }
+            [XmlAttribute(AttributeName = "copyright")]
+            public string Copyright { get; set; }
 
             //TODO: trustInfo
-		}
+        }
 
-        [XmlRoot(ElementName="registryKey", Namespace="urn:schemas-microsoft-com:asm.v3")]
-        public class RegistryKey {
-            
-            [XmlElement(ElementName="registryValue", Namespace="urn:schemas-microsoft-com:asm.v3")]
+        [XmlRoot(ElementName = "registryKey")]
+        public class RegistryKey
+        {
+
+            [XmlElement(ElementName = "registryValue")]
             public List<RegistryValue> RegistryValues { get; set; }
-            [XmlAttribute(AttributeName="keyName", Namespace="urn:schemas-microsoft-com:asm.v3")]
+            [XmlAttribute(AttributeName = "keyName")]
             public string KeyName { get; set; }
-            [XmlElement(ElementName="securityDescriptor", Namespace="urn:schemas-microsoft-com:asm.v3")]
+            [XmlElement(ElementName = "securityDescriptor")]
             public SecurityDescriptor SecurityDescriptor { get; set; }
         }
 
-        [XmlRoot(ElementName="securityDescriptor", Namespace="urn:schemas-microsoft-com:asm.v3")]
-        public class SecurityDescriptor {
-            [XmlAttribute(AttributeName="name", Namespace="urn:schemas-microsoft-com:asm.v3")]
+        [XmlRoot(ElementName = "securityDescriptor")]
+        public class SecurityDescriptor
+        {
+            [XmlAttribute(AttributeName = "name")]
             public string Name { get; set; }
         }
 
-        [XmlRoot(ElementName="registryValue", Namespace="urn:schemas-microsoft-com:asm.v3")]
-        public class RegistryValue {
-            [XmlAttribute(AttributeName="name")]
+        [XmlRoot(ElementName = "registryValue")]
+        public class RegistryValue
+        {
+            [XmlAttribute(AttributeName = "name")]
             public string Name { get; set; }
-            [XmlAttribute(AttributeName="value")]
+            [XmlAttribute(AttributeName = "value")]
             public string Value { get; set; }
-            [XmlAttribute(AttributeName="valueType")]
+            [XmlAttribute(AttributeName = "valueType")]
             public string ValueType { get; set; }
-            [XmlAttribute(AttributeName="mutable")]
+            [XmlAttribute(AttributeName = "mutable")]
             public string Mutable { get; set; }
-            [XmlAttribute(AttributeName="operationHint")]
+            [XmlAttribute(AttributeName = "operationHint")]
             public string OperationHint { get; set; } //e.g: replace
         }
-	}
-	
+    }
+
     public static class XmlDsm
     {
         [XmlRoot(ElementName = "Version", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]

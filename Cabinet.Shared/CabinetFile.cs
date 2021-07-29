@@ -297,7 +297,7 @@ namespace Cabinet
                 // Build Block Map
                 foreach (CabinetVolumeFile file in files)
                 {
-                    if (file.CabinetFileVolumeFile.iFolder != volumeIndex)
+                    if (file.CabinetFileVolumeFile.iFolder != volumeIndex || file.CabinetFileVolumeFile.cbFile == 0)
                     {
                         continue;
                     }
@@ -356,46 +356,59 @@ namespace Cabinet
                             continue;
                         }
 
-                        (CabinetVolumeFile file, int startingBlock, int startingBlockOffset, int endingBlock, int endingBlockOffset) mapping = fileBlockMap.First(x => x.file.FileName == file.FileName);
-
-                        // This block contains this file
-                        if (mapping.startingBlock <= i && i <= mapping.endingBlock)
+                        if (file.CabinetFileVolumeFile.cbFile != 0)
                         {
-                            int start = 0;
-                            int end = dataStruct.cbUncomp - 1;
+                            (CabinetVolumeFile file, int startingBlock, int startingBlockOffset, int endingBlock, int endingBlockOffset) mapping = fileBlockMap.First(x => x.file.FileName == file.FileName);
 
-                            bool IsFirstBlock = mapping.startingBlock == i;
-                            bool IsLastBlock = mapping.endingBlock == i;
-
-                            if (IsFirstBlock)
+                            // This block contains this file
+                            if (mapping.startingBlock <= i && i <= mapping.endingBlock)
                             {
-                                progressCallBack?.Invoke((int)Math.Round((double)fcount / (double)cabinetHeader.CabinetFileHeader.cFiles * 100d), mapping.file.FileName);
-                                start = mapping.startingBlockOffset;
+                                int start = 0;
+                                int end = dataStruct.cbUncomp - 1;
+
+                                bool IsFirstBlock = mapping.startingBlock == i;
+                                bool IsLastBlock = mapping.endingBlock == i;
+
+                                if (IsFirstBlock)
+                                {
+                                    progressCallBack?.Invoke((int)Math.Round((double)fcount / (double)cabinetHeader.CabinetFileHeader.cFiles * 100d), mapping.file.FileName);
+                                    start = mapping.startingBlockOffset;
+                                }
+
+                                if (IsLastBlock)
+                                {
+                                    end = mapping.endingBlockOffset;
+                                    fcount++;
+                                }
+
+                                int count = end - start + 1;
+
+                                string destination = Path.Combine(OutputDirectory, file.FileName);
+                                using (FileStream uncompressedDataStream = File.Open(destination, FileMode.OpenOrCreate))
+                                {
+                                    uncompressedDataStream.Seek(0, SeekOrigin.End);
+                                    uncompressedDataStream.Write(uncompressedDataBlock, start, count);
+                                }
+
+                                if (IsLastBlock)
+                                {
+                                    File.SetAttributes(destination, file.CabinetFileVolumeFile.GetFileAttributes());
+                                    DateTime dt = file.CabinetFileVolumeFile.GetDateTime();
+                                    File.SetCreationTimeUtc(destination, dt);
+                                    File.SetLastWriteTimeUtc(destination, dt);
+                                    File.SetLastAccessTimeUtc(destination, dt);
+                                }
                             }
-
-                            if (IsLastBlock)
-                            {
-                                end = mapping.endingBlockOffset;
-                                fcount++;
-                            }
-
-                            int count = end - start + 1;
-
+                        }
+                        else
+                        {
                             string destination = Path.Combine(OutputDirectory, file.FileName);
-                            using (FileStream uncompressedDataStream = File.Open(destination, FileMode.OpenOrCreate))
-                            {
-                                uncompressedDataStream.Seek(0, SeekOrigin.End);
-                                uncompressedDataStream.Write(uncompressedDataBlock, start, count);
-                            }
-
-                            if (IsLastBlock)
-                            {
-                                File.SetAttributes(destination, file.CabinetFileVolumeFile.GetFileAttributes());
-                                DateTime dt = file.CabinetFileVolumeFile.GetDateTime();
-                                File.SetCreationTimeUtc(destination, dt);
-                                File.SetLastWriteTimeUtc(destination, dt);
-                                File.SetLastAccessTimeUtc(destination, dt);
-                            }
+                            File.Create(destination).Dispose();
+                            File.SetAttributes(destination, file.CabinetFileVolumeFile.GetFileAttributes());
+                            DateTime dt = file.CabinetFileVolumeFile.GetDateTime();
+                            File.SetCreationTimeUtc(destination, dt);
+                            File.SetLastWriteTimeUtc(destination, dt);
+                            File.SetLastAccessTimeUtc(destination, dt);
                         }
                     }
                 }
@@ -452,7 +465,7 @@ namespace Cabinet
                 // Build Block Map
                 foreach (CabinetVolumeFile file in files)
                 {
-                    if (file.CabinetFileVolumeFile.iFolder != volumeIndex)
+                    if (file.CabinetFileVolumeFile.iFolder != volumeIndex || file.CabinetFileVolumeFile.cbFile == 0)
                     {
                         continue;
                     }
@@ -516,33 +529,36 @@ namespace Cabinet
                             continue;
                         }
 
-                        (CabinetVolumeFile file, int startingBlock, int startingBlockOffset, int endingBlock, int endingBlockOffset) mapping = fileBlockMap.First(x => x.file.FileName == file.FileName);
-
-                        // This block contains this file
-                        if (mapping.startingBlock <= i && i <= mapping.endingBlock)
+                        if (file.CabinetFileVolumeFile.cbFile != 0)
                         {
-                            int start = 0;
-                            int end = dataStruct.cbUncomp - 1;
+                            (CabinetVolumeFile file, int startingBlock, int startingBlockOffset, int endingBlock, int endingBlockOffset) mapping = fileBlockMap.First(x => x.file.FileName == file.FileName);
 
-                            bool IsFirstBlock = mapping.startingBlock == i;
-                            bool IsLastBlock = mapping.endingBlock == i;
-
-                            if (IsFirstBlock)
+                            // This block contains this file
+                            if (mapping.startingBlock <= i && i <= mapping.endingBlock)
                             {
-                                start = mapping.startingBlockOffset;
+                                int start = 0;
+                                int end = dataStruct.cbUncomp - 1;
+
+                                bool IsFirstBlock = mapping.startingBlock == i;
+                                bool IsLastBlock = mapping.endingBlock == i;
+
+                                if (IsFirstBlock)
+                                {
+                                    start = mapping.startingBlockOffset;
+                                }
+
+                                if (IsLastBlock)
+                                {
+                                    end = mapping.endingBlockOffset;
+                                    fcount++;
+                                }
+
+                                int count = end - start + 1;
+
+                                using FileStream uncompressedDataStream = File.Open(destination, FileMode.OpenOrCreate);
+                                uncompressedDataStream.Seek(0, SeekOrigin.End);
+                                uncompressedDataStream.Write(uncompressedDataBlock, start, count);
                             }
-
-                            if (IsLastBlock)
-                            {
-                                end = mapping.endingBlockOffset;
-                                fcount++;
-                            }
-
-                            int count = end - start + 1;
-
-                            using FileStream uncompressedDataStream = File.Open(destination, FileMode.OpenOrCreate);
-                            uncompressedDataStream.Seek(0, SeekOrigin.End);
-                            uncompressedDataStream.Write(uncompressedDataBlock, start, count);
                         }
                     }
                 }

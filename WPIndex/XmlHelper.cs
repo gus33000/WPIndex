@@ -8,8 +8,21 @@ namespace WPIndex
     {
         public static XmlMum.Assembly GetUpdateMum(this Stream stream)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(XmlMum.Assembly));
-            XmlMum.Assembly package = (XmlMum.Assembly)serializer.Deserialize(stream);
+            XmlMum.Assembly package;
+            try
+            {
+                //urn:schemas-microsoft-com:asm.v3
+                stream.Seek(0, SeekOrigin.Begin);
+                XmlSerializer serializer = new XmlSerializer(typeof(XmlMum.Assembly), "urn:schemas-microsoft-com:asm.v3");
+                package = (XmlMum.Assembly)serializer.Deserialize(stream);
+            }
+            catch
+            {
+                //urn:schemas-microsoft-com:cbs
+                stream.Seek(0, SeekOrigin.Begin);
+                XmlSerializer serializer = new XmlSerializer(typeof(XmlMum.Assembly), "urn:schemas-microsoft-com:cbs");
+                package = (XmlMum.Assembly)serializer.Deserialize(stream);
+            }
             return package;
         }
 
