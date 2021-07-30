@@ -96,7 +96,7 @@ namespace Cabinet
         public uint CabinetFileDataPayloadOffset { get; set; }
     }
 
-    public class File
+    public class CabinetFile
     {
         /// <summary>
         /// The file size
@@ -118,16 +118,21 @@ namespace Cabinet
         /// </summary>
         public string FileName { get; set; }
 
-        internal File(CabinetVolumeFile file)
+        internal CabinetFile(CabinetVolumeFile file)
         {
             FileName = file.FileName;
             FileAttributes = file.CabinetFileVolumeFile.GetFileAttributes();
             TimeStamp = file.CabinetFileVolumeFile.GetDateTime();
             UncompressedSize = file.CabinetFileVolumeFile.cbFile;
         }
+
+        public override string ToString()
+        {
+            return FileName;
+        }
     }
 
-    public class CabinetFile
+    public class Cabinet
     {
         private readonly byte[] CabinetMagic = new byte[] { (byte)'M', (byte)'S', (byte)'C', (byte)'F' };
 
@@ -137,9 +142,9 @@ namespace Cabinet
         //private readonly string InputFile;
         private readonly Stream InputStream;
 
-        public CabinetFile(string Path) : this(File.OpenRead(Path)) { }
+        public Cabinet(string Path) : this(File.OpenRead(Path)) { }
 
-        public CabinetFile(Stream Stream)
+        public Cabinet(Stream Stream)
         {
             InputStream = Stream;
             InputStream.Seek(0, SeekOrigin.Begin);
@@ -151,7 +156,7 @@ namespace Cabinet
             InputStream.Seek(0, SeekOrigin.Begin);
         }
 
-        public IReadOnlyCollection<string> Files => files.Select(x => x.FileName).ToList();
+        public IReadOnlyCollection<CabinetFile> Files => files.Select(x => new CabinetFile(x)).ToList();
 
         #region Reading Metadata
         private CabinetHeader ReadHeader(Stream cabinetStream)

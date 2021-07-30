@@ -27,9 +27,9 @@ namespace Cabinet
 {
     public static class CabinetExtractor
     {
-        public static IReadOnlyCollection<string> EnumCabinetFiles(string InputFile)
+        public static IReadOnlyCollection<CabinetFile> EnumCabinetFiles(string InputFile)
         {
-            CabinetFile cabFile = new(InputFile);
+            Cabinet cabFile = new(InputFile);
             return cabFile.Files;
         }
 
@@ -46,19 +46,19 @@ namespace Cabinet
         /// <param name="OutputDirectory">Output directory</param>
         public static void ExtractCabinet(string InputFile, string OutputDirectory, Action<int, string> progressCallBack = null)
         {
-            CabinetFile cabFile = new(InputFile);
+            Cabinet cabFile = new(InputFile);
             cabFile.ExtractAllFiles(OutputDirectory, progressCallBack);
         }
 
         public static byte[] ExtractCabinetFile(string InputFile, string FileName)
         {
-            CabinetFile cabFile = new(InputFile);
+            Cabinet cabFile = new(InputFile);
             return cabFile.ReadFile(FileName);
         }
 
-        public static IReadOnlyCollection<string> EnumCabinetFiles(Stream InputFile)
+        public static IReadOnlyCollection<CabinetFile> EnumCabinetFiles(Stream InputFile)
         {
-            CabinetFile cabFile = new(InputFile);
+            Cabinet cabFile = new(InputFile);
             return cabFile.Files;
         }
 
@@ -75,13 +75,13 @@ namespace Cabinet
         /// <param name="OutputDirectory">Output directory</param>
         public static void ExtractCabinet(Stream InputFile, string OutputDirectory, Action<int, string> progressCallBack = null)
         {
-            CabinetFile cabFile = new(InputFile);
+            Cabinet cabFile = new(InputFile);
             cabFile.ExtractAllFiles(OutputDirectory, progressCallBack);
         }
 
         public static byte[] ExtractCabinetFile(Stream InputFile, string FileName)
         {
-            CabinetFile cabFile = new(InputFile);
+            Cabinet cabFile = new(InputFile);
             return cabFile.ReadFile(FileName);
         }
     }

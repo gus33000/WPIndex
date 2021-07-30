@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using static WPIndex.XmlDsm;
 
 namespace WPIndex
 {
@@ -28,6 +29,7 @@ namespace WPIndex
 
         public static XmlDsmDiff.DiffPackage GetDManDDSMXml(this Stream stream)
         {
+            stream.Seek(0, SeekOrigin.Begin);
             XmlSerializer serializer = new XmlSerializer(typeof(XmlDsmDiff.DiffPackage));
             XmlDsmDiff.DiffPackage package = (XmlDsmDiff.DiffPackage)serializer.Deserialize(stream);
             return package;
@@ -35,6 +37,7 @@ namespace WPIndex
 
         public static XmlDsm.Package GetManDSMXml(this Stream stream)
         {
+            stream.Seek(0, SeekOrigin.Begin);
             XmlSerializer serializer = new XmlSerializer(typeof(XmlDsm.Package));
             XmlDsm.Package package = (XmlDsm.Package)serializer.Deserialize(stream);
             return package;
@@ -42,33 +45,65 @@ namespace WPIndex
 
         public static BuildInfo.Buildinformation GetBuildInfoXml(this Stream stream)
         {
+            stream.Seek(0, SeekOrigin.Begin);
             XmlSerializer serializer = new XmlSerializer(typeof(BuildInfo.Buildinformation));
             BuildInfo.Buildinformation package = (BuildInfo.Buildinformation)serializer.Deserialize(stream);
             return package;
         }
 
-        public static string GetFileLocationInCab(this Stream cab, string filename)
+        public static Cabinet.CabinetFile GetFileLocationInCab(this Stream cab, string filename)
         {
-            var files = Cabinet.CabinetExtractor.EnumCabinetFiles(cab);
-            if (files.Any(x => x.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)))
+            cab.Seek(0, SeekOrigin.Begin);
+            System.Collections.Generic.IReadOnlyCollection<Cabinet.CabinetFile> files = Cabinet.CabinetExtractor.EnumCabinetFiles(cab);
+            if (files.Any(x => x.FileName.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)))
             {
-                var updatemum = Cabinet.CabinetExtractor.ExtractCabinetFile(cab, files.First(x => x.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)));
+                byte[] updatemum = Cabinet.CabinetExtractor.ExtractCabinetFile(cab, files.First(x => x.FileName.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)).FileName);
 
-                using var stream = new MemoryStream(updatemum);
-                var package = stream.GetUpdateMum();
+                using MemoryStream stream = new MemoryStream(updatemum);
+                XmlMum.Assembly package = stream.GetUpdateMum();
 
-                var entry = package.Package.CustomInformation.File.First(x => x.Name.EndsWith(filename, System.StringComparison.InvariantCultureIgnoreCase));
-                return entry.Cabpath;
+                XmlMum.File entry = package.Package.CustomInformation.File.First(x => x.Name.EndsWith(filename, System.StringComparison.InvariantCultureIgnoreCase));
+                return files.First(x => x.FileName.Equals(entry.Cabpath, System.StringComparison.InvariantCultureIgnoreCase));
             }
-            else if (files.Any(x => x.EndsWith("man.dsm.xml", System.StringComparison.InvariantCultureIgnoreCase)))
+            else if (files.Any(x => x.FileName.EndsWith("man.dsm.xml", System.StringComparison.InvariantCultureIgnoreCase)))
             {
-                var mandsmxml = Cabinet.CabinetExtractor.ExtractCabinetFile(cab, files.First(x => x.EndsWith("man.dsm.xml", System.StringComparison.InvariantCultureIgnoreCase)));
+                byte[] mandsmxml = Cabinet.CabinetExtractor.ExtractCabinetFile(cab, files.First(x => x.FileName.EndsWith("man.dsm.xml", System.StringComparison.InvariantCultureIgnoreCase)).FileName);
 
-                using var stream = new MemoryStream(mandsmxml);
-                var package = stream.GetManDSMXml();
+                using MemoryStream stream = new MemoryStream(mandsmxml);
+                XmlDsm.Package package = stream.GetManDSMXml();
 
-                var entry = package.Files.FileEntry.First(x => x.DevicePath.EndsWith(filename, System.StringComparison.InvariantCultureIgnoreCase));
-                return entry.CabPath;
+                XmlDsm.FileEntry entry = package.Files.FileEntry.First(x => x.DevicePath.EndsWith(filename, System.StringComparison.InvariantCultureIgnoreCase));
+                return files.First(x => x.FileName.Equals(entry.CabPath, System.StringComparison.InvariantCultureIgnoreCase));
+            }
+            else
+            {
+                throw new InvalidDataException();
+            }
+        }
+
+        public static Cabinet.CabinetFile GetFileLocationInDiffCab(this Stream cab, string filename)
+        {
+            cab.Seek(0, SeekOrigin.Begin);
+            System.Collections.Generic.IReadOnlyCollection<Cabinet.CabinetFile> files = Cabinet.CabinetExtractor.EnumCabinetFiles(cab);
+            /*if (files.Any(x => x.FileName.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)))
+            {
+                byte[] updatemum = Cabinet.CabinetExtractor.ExtractCabinetFile(cab, files.First(x => x.FileName.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)).FileName);
+
+                using MemoryStream stream = new MemoryStream(updatemum);
+                XmlMum.Assembly package = stream.GetUpdateMum();
+
+                XmlMum.File entry = package.Package.CustomInformation.File.First(x => x.Name.EndsWith(filename, System.StringComparison.InvariantCultureIgnoreCase));
+                return files.First(x => x.FileName.Equals(entry.Cabpath, System.StringComparison.InvariantCultureIgnoreCase));
+            }
+            else*/ if (files.Any(x => x.FileName.EndsWith("dman.ddsm.xml", System.StringComparison.InvariantCultureIgnoreCase)))
+            {
+                byte[] mandsmxml = Cabinet.CabinetExtractor.ExtractCabinetFile(cab, files.First(x => x.FileName.EndsWith("dman.ddsm.xml", System.StringComparison.InvariantCultureIgnoreCase)).FileName);
+
+                using MemoryStream stream = new MemoryStream(mandsmxml);
+                XmlDsmDiff.DiffPackage package = stream.GetDManDDSMXml();
+
+                XmlDsmDiff.DiffFileEntry entry = package.Files.DiffFileEntry.First(x => x.DevicePath.EndsWith(filename, System.StringComparison.InvariantCultureIgnoreCase));
+                return files.First(x => x.FileName.Equals(entry.CabPath, System.StringComparison.InvariantCultureIgnoreCase));
             }
             else
             {
@@ -88,22 +123,23 @@ namespace WPIndex
 
         public static CabinetType GetCabinetType(this Stream cab)
         {
+            cab.Seek(0, SeekOrigin.Begin);
             try
             {
-                var files = Cabinet.CabinetExtractor.EnumCabinetFiles(cab);
-                if (files.Any(x => x.EndsWith("_manifest_.cix.xml", System.StringComparison.InvariantCultureIgnoreCase)))
+                System.Collections.Generic.IReadOnlyCollection<Cabinet.CabinetFile> files = Cabinet.CabinetExtractor.EnumCabinetFiles(cab);
+                if (files.Any(x => x.FileName.EndsWith("_manifest_.cix.xml", System.StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return CabinetType.CBSU;
                 }
-                else if (files.Any(x => x.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)))
+                else if (files.Any(x => x.FileName.EndsWith("update.mum", System.StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return CabinetType.CBS;
                 }
-                else if (files.Any(x => x.EndsWith("dman.ddsm.xml", System.StringComparison.InvariantCultureIgnoreCase)))
+                else if (files.Any(x => x.FileName.EndsWith("dman.ddsm.xml", System.StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return CabinetType.SPKU;
                 }
-                else if (files.Any(x => x.EndsWith("man.dsm.xml", System.StringComparison.InvariantCultureIgnoreCase)))
+                else if (files.Any(x => x.FileName.EndsWith("man.dsm.xml", System.StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return CabinetType.SPKG;
                 }
