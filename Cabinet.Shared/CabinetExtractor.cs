@@ -27,9 +27,15 @@ namespace Cabinet
 {
     public static class CabinetExtractor
     {
-        public static IReadOnlyCollection<string> EnumCabinetFiles(string InputFile)
+        public static IReadOnlyCollection<CabinetFile> EnumCabinetFiles(string InputFile)
         {
-            CabinetFile cabFile = new(InputFile);
+            using var strm = File.OpenRead(InputFile);
+            Cabinet cabFile = new(strm);
+            return EnumCabinetFiles(cabFile);
+        }
+
+        public static IReadOnlyCollection<CabinetFile> EnumCabinetFiles(Cabinet cabFile)
+        {
             return cabFile.Files;
         }
 
@@ -46,20 +52,43 @@ namespace Cabinet
         /// <param name="OutputDirectory">Output directory</param>
         public static void ExtractCabinet(string InputFile, string OutputDirectory, Action<int, string> progressCallBack = null)
         {
-            CabinetFile cabFile = new(InputFile);
+            using var strm = File.OpenRead(InputFile);
+            Cabinet cabFile = new(strm);
+            ExtractCabinet(cabFile, OutputDirectory, progressCallBack);
+        }
+
+        /// <summary>
+        /// Expands a cabinet file in pure C# (TM)
+        /// Because nothing else god damn existed at the time of writing this
+        /// and CAB is some archaic format that makes barely any sense in 2021
+        /// at least for most people it seems
+        /// TODO: Multi part
+        /// TODO: CheckSum
+        /// Relevant Documentation that might help at 20% only: https://interoperability.blob.core.windows.net/files/Archive_Exchange/%5bMS-CAB%5d.pdf
+        /// </summary>
+        /// <param name="InputFile">Input cabinet file</param>
+        /// <param name="OutputDirectory">Output directory</param>
+        public static void ExtractCabinet(Cabinet cabFile, string OutputDirectory, Action<int, string> progressCallBack = null)
+        {
             cabFile.ExtractAllFiles(OutputDirectory, progressCallBack);
         }
 
         public static byte[] ExtractCabinetFile(string InputFile, string FileName)
         {
-            CabinetFile cabFile = new(InputFile);
+            using var strm = File.OpenRead(InputFile);
+            Cabinet cabFile = new(strm);
+            return ExtractCabinetFile(cabFile, FileName);
+        }
+
+        public static byte[] ExtractCabinetFile(Cabinet cabFile, string FileName)
+        {
             return cabFile.ReadFile(FileName);
         }
 
-        public static IReadOnlyCollection<string> EnumCabinetFiles(Stream InputFile)
+        public static IReadOnlyCollection<CabinetFile> EnumCabinetFiles(Stream InputFile)
         {
-            CabinetFile cabFile = new(InputFile);
-            return cabFile.Files;
+            Cabinet cabFile = new(InputFile);
+            return EnumCabinetFiles(cabFile);
         }
 
         /// <summary>
@@ -75,14 +104,14 @@ namespace Cabinet
         /// <param name="OutputDirectory">Output directory</param>
         public static void ExtractCabinet(Stream InputFile, string OutputDirectory, Action<int, string> progressCallBack = null)
         {
-            CabinetFile cabFile = new(InputFile);
-            cabFile.ExtractAllFiles(OutputDirectory, progressCallBack);
+            Cabinet cabFile = new(InputFile);
+            ExtractCabinet(cabFile, OutputDirectory, progressCallBack);
         }
 
         public static byte[] ExtractCabinetFile(Stream InputFile, string FileName)
         {
-            CabinetFile cabFile = new(InputFile);
-            return cabFile.ReadFile(FileName);
+            Cabinet cabFile = new(InputFile);
+            return ExtractCabinetFile(cabFile, FileName);
         }
     }
 }

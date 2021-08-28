@@ -23,6 +23,306 @@ using System.Xml.Serialization;
 
 namespace WPIndex
 {
+    public static class XmlPhoneFm
+    {
+        [XmlRoot(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class PackageFile
+        {
+            [XmlAttribute(AttributeName = "Path")]
+            public string Path { get; set; }
+            [XmlAttribute(AttributeName = "Name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "Partition")]
+            public string Partition { get; set; }
+            [XmlAttribute(AttributeName = "ID")]
+            public string ID { get; set; }
+            [XmlAttribute(AttributeName = "Version")]
+            public string Version { get; set; }
+            [XmlAttribute(AttributeName = "FeatureIdentifierPackage")]
+            public string FeatureIdentifierPackage { get; set; }
+            [XmlAttribute(AttributeName = "Resolution")]
+            public string Resolution { get; set; }
+            [XmlAttribute(AttributeName = "Language")]
+            public string Language { get; set; }
+            [XmlElement(ElementName = "FeatureIDs", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public FeatureIDs FeatureIDs { get; set; }
+            [XmlAttribute(AttributeName = "ReleaseType")]
+            public string ReleaseType { get; set; }
+            [XmlAttribute(AttributeName = "Type")]
+            public string Type { get; set; }
+            [XmlAttribute(AttributeName = "CPUType")]
+            public string CPUType { get; set; }
+            [XmlAttribute(AttributeName = "SOC")]
+            public string SOC { get; set; }
+        }
+
+        [XmlRoot(ElementName = "BasePackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class BasePackages
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<PackageFile> PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "BootUILanguagePackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class BootUILanguagePackageFile
+        {
+            [XmlAttribute(AttributeName = "Path")]
+            public string Path { get; set; }
+            [XmlAttribute(AttributeName = "Name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "FeatureIdentifierPackage")]
+            public string FeatureIdentifierPackage { get; set; }
+            [XmlAttribute(AttributeName = "ID")]
+            public string ID { get; set; }
+        }
+
+        [XmlRoot(ElementName = "BootLocalePackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class BootLocalePackageFile
+        {
+            [XmlAttribute(AttributeName = "Path")]
+            public string Path { get; set; }
+            [XmlAttribute(AttributeName = "Name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "FeatureIdentifierPackage")]
+            public string FeatureIdentifierPackage { get; set; }
+            [XmlAttribute(AttributeName = "ID")]
+            public string ID { get; set; }
+        }
+
+        [XmlRoot(ElementName = "FeatureIDs", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class FeatureIDs
+        {
+            [XmlElement(ElementName = "FeatureID", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<string> FeatureID { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Microsoft", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class Microsoft
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<PackageFile> PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "FeatureGroup", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class FeatureGroup
+        {
+            [XmlElement(ElementName = "FeatureIDs", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public FeatureIDs FeatureIDs { get; set; }
+            [XmlAttribute(AttributeName = "Name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "PublishingFeatureGroup")]
+            public string PublishingFeatureGroup { get; set; }
+            [XmlAttribute(AttributeName = "Constraint")]
+            public string Constraint { get; set; }
+            [XmlElement(ElementName = "SubGroups", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public SubGroups SubGroups { get; set; }
+        }
+
+        [XmlRoot(ElementName = "SubGroups", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class SubGroups
+        {
+            [XmlElement(ElementName = "FeatureGroup", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public FeatureGroup FeatureGroup { get; set; }
+        }
+
+        [XmlRoot(ElementName = "MSFeatureGroups", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class MSFeatureGroups
+        {
+            [XmlElement(ElementName = "FeatureGroup", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<FeatureGroup> FeatureGroup { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Features", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class Features
+        {
+            [XmlElement(ElementName = "Microsoft", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public Microsoft Microsoft { get; set; }
+            [XmlElement(ElementName = "MSFeatureGroups", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public MSFeatureGroups MSFeatureGroups { get; set; }
+            [XmlElement(ElementName = "OEM", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string OEM { get; set; }
+            [XmlElement(ElementName = "OEMFeatureGroups", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public string OEMFeatureGroups { get; set; }
+        }
+
+        [XmlRoot(ElementName = "ReleasePackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class ReleasePackages
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<PackageFile> PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "PrereleasePackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class PrereleasePackages
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public PackageFile PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "DeviceLayoutPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class DeviceLayoutPackages
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<PackageFile> PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "SOCPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class SOCPackages
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public List<PackageFile> PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "SpeechPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class SpeechPackages
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public PackageFile PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "KeyboardPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class KeyboardPackages
+        {
+            [XmlElement(ElementName = "PackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public PackageFile PackageFile { get; set; }
+        }
+
+        [XmlRoot(ElementName = "FeatureManifest", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+        public class FeatureManifest
+        {
+            [XmlElement(ElementName = "BasePackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public BasePackages BasePackages { get; set; }
+            [XmlElement(ElementName = "BootUILanguagePackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public BootUILanguagePackageFile BootUILanguagePackageFile { get; set; }
+            [XmlElement(ElementName = "BootLocalePackageFile", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public BootLocalePackageFile BootLocalePackageFile { get; set; }
+            [XmlElement(ElementName = "Features", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public Features Features { get; set; }
+            [XmlElement(ElementName = "ReleasePackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public ReleasePackages ReleasePackages { get; set; }
+            [XmlElement(ElementName = "PrereleasePackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public PrereleasePackages PrereleasePackages { get; set; }
+            [XmlElement(ElementName = "DeviceLayoutPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public DeviceLayoutPackages DeviceLayoutPackages { get; set; }
+            [XmlElement(ElementName = "SOCPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public SOCPackages SOCPackages { get; set; }
+            [XmlElement(ElementName = "SpeechPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public SpeechPackages SpeechPackages { get; set; }
+            [XmlElement(ElementName = "KeyboardPackages", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
+            public KeyboardPackages KeyboardPackages { get; set; }
+            [XmlAttribute(AttributeName = "xsi", Namespace = "http://www.w3.org/2000/xmlns/")]
+            public string Xsi { get; set; }
+            [XmlAttribute(AttributeName = "xsd", Namespace = "http://www.w3.org/2000/xmlns/")]
+            public string Xsd { get; set; }
+            [XmlAttribute(AttributeName = "xmlns")]
+            public string Xmlns { get; set; }
+        }
+    }
+
+    public static class XmlCix
+    {
+        [XmlRoot(ElementName = "Location", Namespace = "urn:ContainerIndex")]
+        public class Location
+        {
+            [XmlAttribute(AttributeName = "path")]
+            public string Path { get; set; }
+            [XmlAttribute(AttributeName = "id")]
+            public string Id { get; set; }
+        }
+
+        [XmlRoot(ElementName = "DeltaBasisSearch", Namespace = "urn:ContainerIndex")]
+        public class DeltaBasisSearch
+        {
+            [XmlElement(ElementName = "Location", Namespace = "urn:ContainerIndex")]
+            public List<Location> Location { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Hash", Namespace = "urn:ContainerIndex")]
+        public class Hash
+        {
+            [XmlAttribute(AttributeName = "alg")]
+            public string Alg { get; set; }
+            [XmlAttribute(AttributeName = "value")]
+            public string Value { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Source", Namespace = "urn:ContainerIndex")]
+        public class Source
+        {
+            [XmlElement(ElementName = "Hash", Namespace = "urn:ContainerIndex")]
+            public Hash Hash { get; set; }
+            [XmlAttribute(AttributeName = "type")]
+            public string Type { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Basis", Namespace = "urn:ContainerIndex")]
+        public class Basis
+        {
+            [XmlElement(ElementName = "Hash", Namespace = "urn:ContainerIndex")]
+            public Hash Hash { get; set; }
+            [XmlAttribute(AttributeName = "loc")]
+            public string Loc { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Delta", Namespace = "urn:ContainerIndex")]
+        public class Delta
+        {
+            [XmlElement(ElementName = "Source", Namespace = "urn:ContainerIndex")]
+            public Source Source { get; set; }
+            [XmlElement(ElementName = "Basis", Namespace = "urn:ContainerIndex")]
+            public Basis Basis { get; set; }
+        }
+
+        [XmlRoot(ElementName = "File", Namespace = "urn:ContainerIndex")]
+        public class File
+        {
+            [XmlElement(ElementName = "Hash", Namespace = "urn:ContainerIndex")]
+            public Hash Hash { get; set; }
+            [XmlElement(ElementName = "Delta", Namespace = "urn:ContainerIndex")]
+            public Delta Delta { get; set; }
+            [XmlAttribute(AttributeName = "id")]
+            public string Id { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "length")]
+            public string Length { get; set; }
+            [XmlAttribute(AttributeName = "time")]
+            public string Time { get; set; }
+            [XmlAttribute(AttributeName = "attr")]
+            public string Attr { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Files", Namespace = "urn:ContainerIndex")]
+        public class Files
+        {
+            [XmlElement(ElementName = "File", Namespace = "urn:ContainerIndex")]
+            public List<File> File { get; set; }
+        }
+
+        [XmlRoot(ElementName = "Container", Namespace = "urn:ContainerIndex")]
+        public class Container
+        {
+            [XmlElement(ElementName = "Description", Namespace = "urn:ContainerIndex")]
+            public string Description { get; set; }
+            [XmlElement(ElementName = "DeltaBasisSearch", Namespace = "urn:ContainerIndex")]
+            public DeltaBasisSearch DeltaBasisSearch { get; set; }
+            [XmlElement(ElementName = "Files", Namespace = "urn:ContainerIndex")]
+            public Files Files { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "type")]
+            public string Type { get; set; }
+            [XmlAttribute(AttributeName = "length")]
+            public string Length { get; set; }
+            [XmlAttribute(AttributeName = "version")]
+            public string Version { get; set; }
+            [XmlAttribute(AttributeName = "xmlns")]
+            public string Xmlns { get; set; }
+        }
+    }
+
     public static class XmlDsmDiff
     {
         [XmlRoot(ElementName = "SourceVersion", Namespace = "http://schemas.microsoft.com/embedded/2004/10/ImageUpdate")]
